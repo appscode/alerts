@@ -7,14 +7,14 @@ metadata:
     version: v1alpha2
   release:
     # Release name
-    name: ""
+    name: "oksdb-elasticsearch-alerts"
     # Release namespace
     namespace: ""
 
 form:
   alert:
     ## Enable PrometheusRule alerts
-    enabled: warning
+    enabled: critical
 
     ## Labels for default rules
     labels: # +doc-gen:break
@@ -43,7 +43,7 @@ form:
 
           # Elasticsearch Heap Usage warning
           elasticsearchHeapUsageWarning:
-            enabled: true
+            enabled: false
             # The heap usage is over 80%
             val: 80
             duration: "2m"
@@ -59,7 +59,7 @@ form:
 
           # Elasticsearch disk space low
           elasticsearchDiskSpaceLow:
-            enabled: true
+            enabled: false
             # The disk usage is over 80%. Value range: 0-100.
             val: 80
             duration: "2m"
@@ -73,7 +73,7 @@ form:
 
           # Elastic Cluster Yellow status
           elasticsearchClusterYellow:
-            enabled: true
+            enabled: false
             duration: "0m"
             severity: warning
 
@@ -95,13 +95,13 @@ form:
 
           # Elasticsearch relocating shards
           elasticsearchRelocatingShards:
-            enabled: true
+            enabled: false
             duration: "0m"
             severity: info
 
           # Elasticsearch is initializing shards
           elasticsearchInitializingShards:
-            enabled: true
+            enabled: false
             duration: "0m"
             severity: info
 
@@ -113,7 +113,7 @@ form:
 
           # Elasticsearch has pending tasks. Cluster works slowly.
           elasticsearchPendingTasks:
-            enabled: true
+            enabled: false
             duration: "15m"
             severity: warning
 
@@ -123,21 +123,21 @@ form:
             duration: "0m"
             severity: info
       provisioner:
-        enabled: warning
+        enabled: critical
         rules:
           appPhaseNotReady:
             enabled: true
             duration: "1m"
             severity: critical
           appPhaseCritical:
-            enabled: true
+            enabled: false
             duration: "15m"
             severity: warning
       opsManager:
-        enabled: warning
+        enabled: critical
         rules:
           opsRequestOnProgress:
-            enabled: true
+            enabled: false
             duration: "0m"
             severity: info
           opsRequestStatusProgressingToLong:
@@ -149,7 +149,7 @@ form:
             duration: "0m"
             severity: critical
       stash:
-        enabled: warning
+        enabled: critical
         rules:
           backupSessionFailed:
             enabled: true
@@ -160,7 +160,7 @@ form:
             duration: "0m"
             severity: critical
           noBackupSessionForTooLong:
-            enabled: true
+            enabled: false
             duration: "0m"
             val: 18000
             severity: warning
@@ -169,17 +169,17 @@ form:
             duration: "5m"
             severity: critical
           repositoryStorageRunningLow:
-            enabled: true
+            enabled: false
             duration: "5m"
             val: 10737418240 # 10GB
             severity: warning
           backupSessionPeriodTooLong:
-            enabled: true
+            enabled: false
             duration: "0m"
             val: 1800 # 30 minute
             severity: warning
           restoreSessionPeriodTooLong:
-            enabled: true
+            enabled: false
             duration: "0m"
             val: 1800 # 30 minute
             severity: warning

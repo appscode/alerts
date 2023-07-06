@@ -7,14 +7,14 @@ metadata:
     version: v1alpha2
   release:
     # Release name
-    name: ""
+    name: "oksdb-mariadb-alerts"
     # Release namespace
     namespace: ""
 
 form:
   alert:
     ## Enable PrometheusRule alerts
-    enabled: warning
+    enabled: critical
 
     ## Labels for default rules
     labels: # +doc-gen:break
@@ -31,7 +31,7 @@ form:
 
     groups:
       database:
-        enabled: warning
+        enabled: critical
         rules:
           mysqlInstanceDown:
             enabled: true
@@ -42,26 +42,26 @@ form:
             duration: "0m"
             severity: critical
           mysqlTooManyConnections:
-            enabled: true
+            enabled: false
             duration: "2m"
             val: 80
             severity: warning
           mysqlHighThreadsRunning:
-            enabled: true
+            enabled: false
             duration: "2m"
             val: 60
             severity: warning
           mysqlSlowQueries:
-            enabled: true
+            enabled: false
             duration: "2m"
             severity: warning
           mysqlInnoDBLogWaits:
-            enabled: true
+            enabled: false
             duration: "0m"
             val: 10
             severity: warning
           mysqlRestarted:
-            enabled: true
+            enabled: false
             duration: "0m"
             val: 60
             severity: warning
@@ -81,12 +81,12 @@ form:
             val: 1048576 # 1MB
             severity: critical
           mysqlTooManyOpenFiles:
-            enabled: true
+            enabled: false
             duration: "2m"
             val: 80
             severity: warning
       cluster:
-        enabled: warning
+        enabled: critical
         rules:
           galeraReplicationLatencyTooLong:
             enabled: true
@@ -94,21 +94,21 @@ form:
             duration: "5m"
             severity: warning
       provisioner:
-        enabled: warning
+        enabled: critical
         rules:
           appPhaseNotReady:
             enabled: true
             duration: "1m"
             severity: critical
           appPhaseCritical:
-            enabled: true
+            enabled: false
             duration: "15m"
             severity: warning
       opsManager:
-        enabled: warning
+        enabled: critical
         rules:
           opsRequestOnProgress:
-            enabled: true
+            enabled: false
             duration: "0m"
             severity: info
           opsRequestStatusProgressingToLong:
@@ -120,7 +120,7 @@ form:
             duration: "0m"
             severity: critical
       stash:
-        enabled: warning
+        enabled: critical
         rules:
           backupSessionFailed:
             enabled: true
@@ -131,7 +131,7 @@ form:
             duration: "0m"
             severity: critical
           noBackupSessionForTooLong:
-            enabled: true
+            enabled: false
             duration: "0m"
             val: 18000
             severity: warning
@@ -140,40 +140,40 @@ form:
             duration: "5m"
             severity: critical
           repositoryStorageRunningLow:
-            enabled: true
+            enabled: false
             duration: "5m"
             val: 10737418240 # 10GB
             severity: warning
           backupSessionPeriodTooLong:
-            enabled: true
+            enabled: false
             duration: "0m"
             val: 1800 # 30 minute
             severity: warning
           restoreSessionPeriodTooLong:
-            enabled: true
+            enabled: false
             duration: "0m"
             val: 1800 # 30 minute
             severity: warning
       schemaManager:
-        enabled: warning
+        enabled: critical
         rules:
           schemaPendingForTooLong:
-            enabled: true
+            enabled: false
             duration: "30m"
             severity: warning
           schemaInProgressForTooLong:
-            enabled: true
+            enabled: false
             duration: "30m"
             severity: warning
           schemaTerminatingForTooLong:
-            enabled: true
+            enabled: false
             duration: "30m"
             severity: warning
           schemaFailed:
-            enabled: true
+            enabled: false
             duration: "0m"
             severity: warning
           schemaExpired:
-            enabled: true
+            enabled: false
             duration: "0m"
             severity: warning

@@ -7,14 +7,14 @@ metadata:
     version: v1alpha2
   release:
     # Release name
-    name: ""
+    name: "oksdb-redis-alerts"
     # Release namespace
     namespace: ""
 
 form:
   alert:
     ## Enable PrometheusRule alerts
-    enabled: warning
+    enabled: critical
 
     ## Labels for default rules
     labels: # +doc-gen:break
@@ -31,7 +31,7 @@ form:
 
     groups:
       database:
-        enabled: warning
+        enabled: critical
         rules:
           redisDown:
             enabled: true
@@ -53,7 +53,7 @@ form:
             val: 1
             severity: warning
           redisTooManyConnections:
-            enabled: true
+            enabled: false
             duration: "2m"
             val: 100
             severity: warning
@@ -63,21 +63,21 @@ form:
             val: 0
             severity: warning
       provisioner:
-        enabled: warning
+        enabled: critical
         rules:
           appPhaseNotReady:
             enabled: true
             duration: "1m"
             severity: critical
           appPhaseCritical:
-            enabled: true
+            enabled: false
             duration: "15m"
             severity: warning
       opsManager:
-        enabled: warning
+        enabled: critical
         rules:
           opsRequestOnProgress:
-            enabled: true
+            enabled: false
             duration: "0m"
             severity: info
           opsRequestStatusProgressingToLong:
@@ -89,7 +89,7 @@ form:
             duration: "0m"
             severity: critical
       stash:
-        enabled: warning
+        enabled: critical
         rules:
           backupSessionFailed:
             enabled: true
@@ -100,7 +100,7 @@ form:
             duration: "0m"
             severity: critical
           noBackupSessionForTooLong:
-            enabled: true
+            enabled: false
             duration: "0m"
             val: 18000
             severity: warning
@@ -109,17 +109,17 @@ form:
             duration: "5m"
             severity: critical
           repositoryStorageRunningLow:
-            enabled: true
+            enabled: false
             duration: "5m"
             val: 10737418240 # 10GB
             severity: warning
           backupSessionPeriodTooLong:
-            enabled: true
+            enabled: false
             duration: "0m"
             val: 1800 # 30 minute
             severity: warning
           restoreSessionPeriodTooLong:
-            enabled: true
+            enabled: false
             duration: "0m"
             val: 1800 # 30 minute
             severity: warning
