@@ -1,0 +1,125 @@
+metadata:
+  resource:
+    group: kubedb.com
+    kind: Kafka
+    name: kafkas
+    scope: Namespaced
+    version: v1alpha2
+  release:
+    # Release name
+    name: ""
+    # Release namespace
+    namespace: ""
+
+form:
+  alert:
+    ## Enable PrometheusRule alerts
+    enabled: warning
+
+    ## Labels for default rules
+    labels: # +doc-gen:break
+      release: prometheus
+
+    ## Annotations for default rules
+    annotations: {}
+
+    ## Additional labels for PrometheusRule alerts
+    additionalRuleLabels: {}
+
+    ## Prefix for runbook URLs. Use this to override the first part of the runbookURLs that is common to all rules.
+    # runbookUrl: "https://runbooks.prometheus-operator.dev/runbooks"
+
+    groups:
+      database:
+        enabled: warning
+        rules:
+          kafkaUnderReplicatedPartitions:
+            enabled: true
+            duration: "10s"
+            severity: warning
+            val: 0
+          kafkaAbnormalControllerState:
+            enabled: true
+            duration: "10s"
+            severity: warning
+            val: 1
+          kafkaOfflinePartitions:
+            enabled: true
+            duration: "10s"
+            severity: warning
+            val: 0
+          kafkaUnderMinIsrPartitionCount:
+            enabled: true
+            duration: "10s"
+            severity: warning
+            val: 0
+          kafkaOfflineLogDirectoryCount:
+            enabled: true
+            duration: "10s"
+            severity: warning
+            val: 0
+          kafkaISRExpandRate:
+            enabled: true
+            duration: "1m"
+            severity: warning
+            val: 0
+          kafkaISRShrinkRate:
+            enabled: true
+            duration: "1m"
+            severity: warning
+            val: 0
+          kafkaBrokerCount:
+            enabled: true
+            duration: "1m"
+            severity: critical
+            val: 0
+          kafkaNetworkProcessorIdlePercent:
+            enabled: true
+            duration: "1m"
+            severity: critical
+            val: 0.3
+          kafkaRequestHandlerIdlePercent:
+            enabled: true
+            duration: "1m"
+            severity: critical
+            val: 0.3
+          kafkaReplicaFetcherManagerMaxLag:
+            enabled: true
+            duration: "1m"
+            severity: critical
+            val: 50
+          kafkaTopicCount:
+            enabled: true
+            duration: "1m"
+            severity: warning
+            val: 1000
+          # Sepcifies the alert configuration for database is in Critical phase, that means one or more of the nodes are down but the database read/write are not hampered.
+          kafkaPhaseCritical:
+            enabled: true
+            duration: "3m"
+            severity: warning
+          # Sepcifies the alert configuration for database is in NotReady phase, that means the database is not accepting connections, read/write are hampered.
+          kafkaDown:
+            enabled: true
+            duration: "30s"
+            severity: critical
+          # Sepcifies the alert configuration for high latency.
+
+      provisioner:
+        enabled: warning
+        rules:
+          appPhaseNotReady:
+            enabled: true
+            duration: "1m"
+            severity: critical
+          appPhaseCritical:
+            enabled: true
+            duration: "15m"
+            severity: warning
+
+grafana:
+  enabled: true
+  version: 8.2.3
+  jobName: kubedb-databases
+  url: "prometheus-grafana.monitoring.svc:80"
+  apikey: "eyJrIjoiSURkdFNiYXBxelpIcDVyRFUyTXRvU1VDV1ZUR09lNDQiLCJuIjoic2QiLCJpZCI6MX0="
