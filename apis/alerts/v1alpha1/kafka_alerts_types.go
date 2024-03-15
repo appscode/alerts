@@ -28,7 +28,7 @@ const (
 	ResourceKafkaAlertss    = "kafkaalertss"
 )
 
-// MongodbAlerts defines the schama for KubeDB Ops Manager Operator Installer.
+// KafkaAlerts defines the schama for KubeDB Ops Manager Operator Installer.
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
