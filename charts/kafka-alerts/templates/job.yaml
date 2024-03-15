@@ -32,6 +32,5 @@ spec:
               name: grafana-json-volume
       restartPolicy: Never
   backoffLimit: 2
-  successfulJobsHistoryLimit: 1
   ttlSecondsAfterFinished: 120
 {{- end }}

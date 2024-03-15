@@ -46,7 +46,7 @@
 
 - #### KubeDBKafkaPhaseNotReady
   - Describe the `Kafka` CR, check the reason from conditions.
-  - Check mongodb pod logs
+  - Check kafka pod logs
   - Check KubeDB provisioner logs
   - Contact AppsCode team
 - #### KubeDBKafkaPhaseCritical
