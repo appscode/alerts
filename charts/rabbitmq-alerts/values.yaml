@@ -17,7 +17,7 @@ form:
 
     ## Labels for default rules
     labels: # +doc-gen:break
-      release: prometheus
+      release: kube-prometheus-stack
 
     ## Annotations for default rules
     annotations: {}
@@ -32,40 +32,47 @@ form:
       database:
         enabled: warning
         rules:
+          # Specifies the alert configuration for database is in Critical phase, that means one or more of the nodes are down but the database read/write are not hampered.
           rabbitmqPhaseCritical:
             enabled: true
             duration: "3m"
             severity: warning
-          # Sepcifies the alert configuration for database is in NotReady phase, that means the database is not accepting connections, read/write are hampered.
+          # Specifies the alert configuration for database is in NotReady phase, that means the database is not accepting connections, read/write are hampered.
           rabbitmqDown:
             enabled: true
             duration: "30s"
             severity: critical
-          # Sepcifies the alert configuration for high latency.
+          # Specifies the alert configuration for high latency.
           rabbitmqFileDescriptorsNearLimit:
             enabled: true
             duration: "30s"
             severity: warning
+          # Specifies the alert configuration for frequently opening and closing of connections.
           rabbitmqHighConnectionChurn:
             enabled: true
             duration: "30s"
             severity: warning
+          # Specifies alert configuration for incorrect erlang distributions in nodes
           rabbitmqInsufficientEstablishedErlangDistributionLinks:
             enabled: true
             duration: "30s"
             severity: warning
+          # Specifies alert configuration for disk space used upto watermark threshold
           rabbitmqLowDiskWatermarkPredicted:
             enabled: true
             duration: "30s"
             severity: warning
+          # Specifies alert configuration for misconfigured routing of messages
           rabbitmqUnroutableMessages:
             enabled: true
             duration: "30s"
             severity: warning
+          # Specifies alert configuration for lower number of opened TCP sockets than required
           rabbitmqTCPSocketsNearLimit:
             enabled: true
             duration: "30s"
             severity: warning
+          # Specifies alert configuration for rapidly growing queues
           rabbitmqQueueIsGrowing:
             enabled: true
             duration: "30s"
@@ -83,8 +90,8 @@ form:
             severity: warning
 
 grafana:
-  enabled: true
+  enabled: false
   version: 8.2.3
   jobName: kubedb-databases
-  url: "http://prometheus-grafana.monitoring.svc:80"
-  apikey: "eyJrIjoiOFdnY3pYWjNkUDRPaUMydDNRUXNMeVAydHNkOXFpd2YiLCJuIjoic2RzZCIsImlkIjoxfQ=="
+  url: ""
+  apikey: ""
