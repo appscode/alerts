@@ -1,0 +1,97 @@
+metadata:
+  resource:
+    group: kubedb.com
+    kind: RabbitMQ
+    name: rabbitmqs
+    scope: Namespaced
+    version: v1alpha2
+  release:
+    # Release name
+    name: ""
+    # Release namespace
+    namespace: ""
+form:
+  alert:
+    ## Enable PrometheusRule alerts
+    enabled: warning
+
+    ## Labels for default rules
+    labels: # +doc-gen:break
+      release: kube-prometheus-stack
+
+    ## Annotations for default rules
+    annotations: {}
+
+    ## Additional labels for PrometheusRule alerts
+    additionalRuleLabels: {}
+
+    ## Prefix for runbook URLs. Use this to override the first part of the runbookURLs that is common to all rules.
+    # runbookUrl: "https://runbooks.prometheus-operator.dev/runbooks"
+
+    groups:
+      database:
+        enabled: warning
+        rules:
+          # Specifies the alert configuration for database is in Critical phase, that means one or more of the nodes are down but the database read/write are not hampered.
+          rabbitmqPhaseCritical:
+            enabled: true
+            duration: "3m"
+            severity: warning
+          # Specifies the alert configuration for database is in NotReady phase, that means the database is not accepting connections, read/write are hampered.
+          rabbitmqDown:
+            enabled: true
+            duration: "30s"
+            severity: critical
+          # Specifies the alert configuration for high latency.
+          rabbitmqFileDescriptorsNearLimit:
+            enabled: true
+            duration: "30s"
+            severity: warning
+          # Specifies the alert configuration for frequently opening and closing of connections.
+          rabbitmqHighConnectionChurn:
+            enabled: true
+            duration: "30s"
+            severity: warning
+          # Specifies alert configuration for incorrect erlang distributions in nodes
+          rabbitmqInsufficientEstablishedErlangDistributionLinks:
+            enabled: true
+            duration: "30s"
+            severity: warning
+          # Specifies alert configuration for disk space used upto watermark threshold
+          rabbitmqLowDiskWatermarkPredicted:
+            enabled: true
+            duration: "30s"
+            severity: warning
+          # Specifies alert configuration for misconfigured routing of messages
+          rabbitmqUnroutableMessages:
+            enabled: true
+            duration: "30s"
+            severity: warning
+          # Specifies alert configuration for lower number of opened TCP sockets than required
+          rabbitmqTCPSocketsNearLimit:
+            enabled: true
+            duration: "30s"
+            severity: warning
+          # Specifies alert configuration for rapidly growing queues
+          rabbitmqQueueIsGrowing:
+            enabled: true
+            duration: "30s"
+            severity: warning
+      provisioner:
+        enabled: warning
+        rules:
+          appPhaseNotReady:
+            enabled: true
+            duration: "1m"
+            severity: critical
+          appPhaseCritical:
+            enabled: true
+            duration: "15m"
+            severity: warning
+
+grafana:
+  enabled: false
+  version: 8.2.3
+  jobName: kubedb-databases
+  url: ""
+  apikey: ""
