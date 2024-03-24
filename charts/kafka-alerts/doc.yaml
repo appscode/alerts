@@ -1,0 +1,18 @@
+project:
+  name: Kafka alerts by AppsCode
+  shortName: Kafka alerts
+  url: https://github.com/appscode/alerts
+  description: Kafka alerts for KubeDB
+  app: Kafka alerts
+repository:
+  url: https://charts.appscode.com/stable/
+  name: appscode
+chart:
+  name: kafka
+  values: -- generate from values file --
+  valuesExample: -- generate from values file --
+prerequisites:
+- Kubernetes 1.19+
+release:
+  name: kafka
+  namespace: demo
