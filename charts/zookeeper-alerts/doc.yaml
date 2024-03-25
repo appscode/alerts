@@ -1,0 +1,18 @@
+project:
+  name: ZooKeeper alerts by AppsCode
+  shortName: ZooKeeper alerts
+  url: https://github.com/appscode/alerts
+  description: ZooKeeper alerts for KubeDB
+  app: ZooKeeper alerts
+repository:
+  url: https://charts.appscode.com/stable/
+  name: appscode
+chart:
+  name: zookeeper
+  values: -- generate from values file --
+  valuesExample: -- generate from values file --
+prerequisites:
+- Kubernetes 1.19+
+release:
+  name: zookeeper
+  namespace: demo
