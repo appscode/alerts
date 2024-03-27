@@ -64,6 +64,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&MysqlAlertsList{},
 		&PerconaxtradbAlerts{},
 		&PerconaxtradbAlertsList{},
+		&PgpoolAlerts{},
+		&PgpoolAlertsList{},
 		&PostgresAlerts{},
 		&PostgresAlertsList{},
 		&ProxysqlAlerts{},

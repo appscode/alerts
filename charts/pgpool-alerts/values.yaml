@@ -1,0 +1,100 @@
+metadata:
+  resource:
+    group: kubedb.com
+    kind: Pgpool
+    name: pgpools
+    scope: Namespaced
+    version: v1alpha2
+  release:
+    # Release name
+    name: ""
+    # Release namespace
+    namespace: ""
+
+form:
+  alert:
+    ## Enable PrometheusRule alerts
+    enabled: warning
+
+    ## Labels for default rules
+    labels: # +doc-gen:break
+      release: prometheus
+
+    ## Annotations for default rules
+    annotations: {}
+
+    ## Additional labels for PrometheusRule alerts
+    additionalRuleLabels: {}
+
+    ## Prefix for runbook URLs. Use this to override the first part of the runbookURLs that is common to all rules.
+    # runbookUrl: "https://runbooks.prometheus-operator.dev/runbooks"
+
+    groups:
+      database:
+        enabled: warning
+        rules:
+          # Specifies the alert configuration for connection usage
+          pgpoolTooManyConnections:
+            enabled: true
+            val: .1 # 10%
+            duration: "1m"
+            severity: warning
+          # Specifies the alert configuration for exporter scrape error.
+          pgpoolExporterLastScrapeError:
+            enabled: true
+            duration: "0m"
+            severity: warning
+          # Specifies the alert configuration for pgpool instance down.
+          pgpoolDown:
+            enabled: true
+            duration: "0m"
+            severity: critical
+          # Specifies the alert configuration for backend postgres associated with pgpool.
+          pgpoolPostgresHealthCheckFailure:
+            enabled: true
+            val: 10
+            duration: "0m"
+            severity: critical
+          # Specifies the alert configuration for panic message returned from backend postgres of pgpool.
+          pgpoolBackendPanicMessageCount:
+            enabled: true
+            val: 10
+            duration: "0m"
+            severity: critical
+          # Specifies the alert configuration for fatal message returned from backend postgres of pgpool.
+          pgpoolBackendFatalMessageCount:
+            enabled: true
+            val: 10
+            duration: "0m"
+            severity: critical
+          # Specifies the alert configuration for error message returned from backend postgres of pgpool.
+          pgpoolBackendErrorMessageCount:
+            enabled: true
+            val: 10
+            duration: "0m"
+            severity: critical
+          # Specifies the alert configuration for low memory of pgpool cache, triggers if less than < val.
+          pgpoolLowCacheMemory:
+            enabled: true
+            val: 100 # 10mb
+            duration: "1m"
+            severity: warning
+      provisioner:
+        enabled: warning
+        rules:
+          appPhaseNotReady:
+            enabled: true
+            duration: "1m"
+            severity: critical
+          appPhaseCritical:
+            enabled: true
+            duration: "15m"
+            severity: warning
+
+
+grafana:
+  enabled: false
+  version: 8.2.3
+  jobName: kubedb-databases
+  url: ""
+  apikey: ""

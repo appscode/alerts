@@ -1,0 +1,1515 @@
+# templates/configmap.yaml
+{{- if .Values.grafana.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "pgpool-alerts.fullname" . }}-configmap
+  labels:
+    {{- include "pgpool-alerts.labels" . | nindent 4 }}
+data:
+  grafana-json.json: |-
+    {
+      "dashboard": {
+        "__inputs": [],
+        "__requires": [
+          {
+            "type": "grafana",
+            "id": "grafana",
+            "name": "Grafana",
+            "version": "{{ .Values.grafana.version }}"
+          },
+          {
+            "type": "panel",
+            "id": "graph",
+            "name": "Graph",
+            "version": ""
+          }
+        ],
+        "annotations": {
+          "list": [
+            {
+              "builtIn": 1,
+              "datasource": "-- Grafana --",
+              "enable": true,
+              "hide": true,
+              "iconColor": "rgba(0, 211, 255, 1)",
+              "name": "Annotations & Alerts",
+              "type": "dashboard"
+            }
+          ]
+        },
+        "editable": true,
+        "gnetId": null,
+        "graphTooltip": 0,
+        "id": null,
+        "links": [],
+        "panels": [
+          {
+            "collapsed": false,
+            "datasource": null,
+            "gridPos": {
+              "h": 1,
+              "w": 24,
+              "x": 0,
+              "y": 0
+            },
+            "id": 2,
+            "panels": [],
+            "title": "Pgpool Phase",
+            "type": "row"
+          },
+          {
+            "alert": {
+              "alertRuleTags": {},
+              "conditions": [
+                {
+                  "evaluator": {
+                    "params": [
+                      0
+                    ],
+                    "type": "gt"
+                  },
+                  "operator": {
+                    "type": "and"
+                  },
+                  "query": {
+                    "params": [
+                      "A",
+                      "5m",
+                      "now"
+                    ]
+                  },
+                  "reducer": {
+                    "params": [],
+                    "type": "last"
+                  },
+                  "type": "query"
+                }
+              ],
+              "executionErrorState": "alerting",
+              "for": "{{ .Values.form.alert.groups.provisioner.rules.appPhaseNotReady.duration }}",
+              "frequency": "5m",
+              "handler": 1,
+              "name": "KubeDBPgpoolPhaseNotReady",
+              "noDataState": "no_data",
+              "notifications": []
+            },
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "description": "Trigger alert if phase is not ready",
+            "fieldConfig": {
+              "defaults": {},
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 1
+            },
+            "hiddenSeries": false,
+            "id": 4,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "7.5.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "kubedb_com_pgpool_status_phase{app=\"{{ .Release.Name }}\",namespace=\"{{ .Release.Namespace }}\",phase=\"NotReady\"}",
+                "instant": false,
+                "interval": "",
+                "legendFormat": {{ `"{{pgpool}}"` }},
+                "refId": "A"
+              }
+            ],
+            "thresholds": [
+              {
+                "colorMode": "critical",
+                "fill": true,
+                "line": true,
+                "op": "gt",
+                "value": 0,
+                "visible": true
+              }
+            ],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Pgpool Phase Not Ready",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "alert": {
+              "alertRuleTags": {},
+              "conditions": [
+                {
+                  "evaluator": {
+                    "params": [
+                      0
+                    ],
+                    "type": "gt"
+                  },
+                  "operator": {
+                    "type": "and"
+                  },
+                  "query": {
+                    "params": [
+                      "A",
+                      "5m",
+                      "now"
+                    ]
+                  },
+                  "reducer": {
+                    "params": [],
+                    "type": "last"
+                  },
+                  "type": "query"
+                }
+              ],
+              "executionErrorState": "alerting",
+              "for": "{{ .Values.form.alert.groups.provisioner.rules.appPhaseCritical.duration }}",
+              "frequency": "5m",
+              "handler": 1,
+              "name": "KubeDBPgpoolPhaseCritical",
+              "noDataState": "no_data",
+              "notifications": []
+            },
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "description": "Trigger alert if phase is critical",
+            "fieldConfig": {
+              "defaults": {},
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 1
+            },
+            "hiddenSeries": false,
+            "id": 5,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "7.5.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "kubedb_com_pgpool_status_phase{app=\"{{ .Release.Name }}\",namespace=\"{{ .Release.Namespace }}\",phase=\"Critical\"}",
+                "instant": false,
+                "interval": "",
+                "legendFormat": {{ `"{{pgpool}}"` }},
+                "refId": "A"
+              }
+            ],
+            "thresholds": [
+              {
+                "colorMode": "critical",
+                "fill": true,
+                "line": true,
+                "op": "gt",
+                "value": 0,
+                "visible": true
+              }
+            ],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Pgpool Phase Critical",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "collapsed": false,
+            "datasource": null,
+            "gridPos": {
+              "h": 1,
+              "w": 24,
+              "x": 0,
+              "y": 9
+            },
+            "id": 14,
+            "panels": [],
+            "title": "Pgpool Info",
+            "type": "row"
+          },
+          {
+            "alert": {
+              "alertRuleTags": {},
+              "conditions": [
+                {
+                  "evaluator": {
+                    "params": [
+                      1
+                    ],
+                    "type": "lt"
+                  },
+                  "operator": {
+                    "type": "and"
+                  },
+                  "query": {
+                    "params": [
+                      "A",
+                      "5m",
+                      "now"
+                    ]
+                  },
+                  "reducer": {
+                    "params": [],
+                    "type": "last"
+                  },
+                  "type": "query"
+                }
+              ],
+              "executionErrorState": "alerting",
+              "for": "{{ .Values.form.alert.groups.database.rules.pgpoolDown.duration }}",
+              "frequency": "5m",
+              "handler": 1,
+              "name": "PgpoolDown",
+              "noDataState": "no_data",
+              "notifications": []
+            },
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "description": "Specifies  alert  for Pgpool pod ",
+            "fieldConfig": {
+              "defaults": {},
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 10
+            },
+            "hiddenSeries": false,
+            "id": 15,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "7.5.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "pgpool2_up{job=\"{{ .Values.grafana.jobName }}\",namespace=\"{{ .Release.Namespace }}\",service=\"{{ .Release.Name }}-stats\"}",
+                "instant": false,
+                "interval": "",
+                "legendFormat": {{ `"{{pod}}"` }},
+                "refId": "A"
+              }
+            ],
+            "thresholds": [
+              {
+                "colorMode": "critical",
+                "fill": true,
+                "line": true,
+                "op": "lt",
+                "value": 1,
+                "visible": true
+              }
+            ],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Pgpool Down",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "alert": {
+              "alertRuleTags": {},
+              "conditions": [
+                {
+                  "evaluator": {
+                    "params": [
+                      {{ .Values.form.alert.groups.database.rules.pgpoolTooManyConnections.val }}
+                    ],
+                    "type": "gt"
+                  },
+                  "operator": {
+                    "type": "and"
+                  },
+                  "query": {
+                    "params": [
+                      "A",
+                      "5m",
+                      "now"
+                    ]
+                  },
+                  "reducer": {
+                    "params": [],
+                    "type": "last"
+                  },
+                  "type": "query"
+                }
+              ],
+              "executionErrorState": "alerting",
+              "for": "{{ .Values.form.alert.groups.database.rules.pgpoolTooManyConnections.duration }}",
+              "frequency": "5m",
+              "handler": 1,
+              "name": "PgpoolTooManyConnections",
+              "noDataState": "no_data",
+              "notifications": []
+            },
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "description": "Specifies  alert  for Pgpool opened connections",
+            "fieldConfig": {
+              "defaults": {
+                "unit": "percentunit"
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 10
+            },
+            "hiddenSeries": false,
+            "id": 16,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "7.5.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "(sum by (pod) (pgpool2_backend_by_process_total{job=\"{{ .Values.grafana.jobName }}\",namespace=\"{{ .Release.Namespace }}\",service=\"{{ .Release.Name }}-stats\"}) / sum by (pod) (pgpool2_backend_total{job=\"{{ .Values.grafana.jobName }}\",namespace=\"{{ .Release.Namespace }}\",service=\"{{ .Release.Name }}-stats\"}))",
+                "instant": false,
+                "interval": "",
+                "legendFormat": {{ `"{{pod}}"` }},
+                "refId": "A"
+              }
+            ],
+            "thresholds": [
+              {
+                "colorMode": "critical",
+                "fill": true,
+                "line": true,
+                "op": "gt",
+                "value": 0.9,
+                "visible": true
+              }
+            ],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Too Many Connections",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "percentunit",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "alert": {
+              "alertRuleTags": {},
+              "conditions": [
+                {
+                  "evaluator": {
+                    "params": [
+                      0
+                    ],
+                    "type": "gt"
+                  },
+                  "operator": {
+                    "type": "and"
+                  },
+                  "query": {
+                    "params": [
+                      "A",
+                      "5m",
+                      "now"
+                    ]
+                  },
+                  "reducer": {
+                    "params": [],
+                    "type": "last"
+                  },
+                  "type": "query"
+                }
+              ],
+              "executionErrorState": "alerting",
+              "for": "{{ .Values.form.alert.groups.database.rules.pgpoolExporterLastScrapeError.duration }}",
+              "frequency": "5m",
+              "handler": 1,
+              "name": "PgpoolExporterLastScrapeError",
+              "noDataState": "no_data",
+              "notifications": []
+            },
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "description": "Specifies  alert  for Pgpool exporter error",
+            "fieldConfig": {
+              "defaults": {
+                "unit": "none"
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 18
+            },
+            "hiddenSeries": false,
+            "id": 17,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "7.5.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "pgpool2_last_scrape_error{job=\"{{ .Values.grafana.jobName }}\",namespace=\"{{ .Release.Namespace }}\",service=\"{{ .Release.Name }}-stats\"}",
+                "instant": false,
+                "interval": "",
+                "legendFormat": {{ `"{{pod}}"` }},
+                "refId": "A"
+              }
+            ],
+            "thresholds": [
+              {
+                "colorMode": "critical",
+                "fill": true,
+                "line": true,
+                "op": "gt",
+                "value": 0,
+                "visible": true
+              }
+            ],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Exporter Last Scrape Error",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "none",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "alert": {
+              "alertRuleTags": {},
+              "conditions": [
+                {
+                  "evaluator": {
+                    "params": [
+                      {{ .Values.form.alert.groups.database.rules.pgpoolLowCacheMemory.val }}
+                    ],
+                    "type": "lt"
+                  },
+                  "operator": {
+                    "type": "and"
+                  },
+                  "query": {
+                    "params": [
+                      "A",
+                      "5m",
+                      "now"
+                    ]
+                  },
+                  "reducer": {
+                    "params": [],
+                    "type": "last"
+                  },
+                  "type": "query"
+                }
+              ],
+              "executionErrorState": "alerting",
+              "for": "{{ .Values.form.alert.groups.database.rules.pgpoolLowCacheMemory.duration }}",
+              "frequency": "5m",
+              "handler": 1,
+              "name": "PgpoolLowCacheMemory",
+              "noDataState": "no_data",
+              "notifications": []
+            },
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "description": "Specifies  alert  for Pgpool low cache memory",
+            "fieldConfig": {
+              "defaults": {
+                "unit": "decmbytes"
+              },
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 18
+            },
+            "hiddenSeries": false,
+            "id": 18,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "7.5.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "pgpool2_pool_cache_free_cache_entries_size{job=\"{{ .Values.grafana.jobName }}\",namespace=\"{{ .Release.Namespace }}\",service=\"{{ .Release.Name }}-stats\"} / 1000000",
+                "instant": false,
+                "interval": "",
+                "legendFormat": {{ `"{{pod}}"` }},
+                "refId": "A"
+              }
+            ],
+            "thresholds": [
+              {
+                "colorMode": "critical",
+                "fill": true,
+                "line": true,
+                "op": "lt",
+                "value": 10,
+                "visible": true
+              }
+            ],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Low Cache Memory",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "decmbytes",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "collapsed": false,
+            "datasource": null,
+            "gridPos": {
+              "h": 1,
+              "w": 24,
+              "x": 0,
+              "y": 26
+            },
+            "id": 7,
+            "panels": [],
+            "title": "Backend PostgresSQL",
+            "type": "row"
+          },
+          {
+            "alert": {
+              "alertRuleTags": {},
+              "conditions": [
+                {
+                  "evaluator": {
+                    "params": [
+                      {{ .Values.form.alert.groups.database.rules.pgpoolBackendPanicMessageCount.val }}
+                    ],
+                    "type": "gt"
+                  },
+                  "operator": {
+                    "type": "and"
+                  },
+                  "query": {
+                    "params": [
+                      "A",
+                      "5m",
+                      "now"
+                    ]
+                  },
+                  "reducer": {
+                    "params": [],
+                    "type": "last"
+                  },
+                  "type": "query"
+                }
+              ],
+              "executionErrorState": "alerting",
+              "for": "{{ .Values.form.alert.groups.database.rules.pgpoolBackendPanicMessageCount.duration }}",
+              "frequency": "10m",
+              "handler": 1,
+              "name": "PgpoolBackendPanicMessageCount",
+              "noDataState": "no_data",
+              "notifications": []
+            },
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "description": "Pgpool panic messages returned from backend postgres",
+            "fieldConfig": {
+              "defaults": {},
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 27
+            },
+            "hiddenSeries": false,
+            "id": 9,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "7.5.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "pgpool2_pool_backend_stats_panic_cnt{job=\"{{ .Values.grafana.jobName }}\",namespace=\"{{ .Release.Namespace }}\",service=\"{{ .Release.Name }}-stats\"}",
+                "instant": false,
+                "interval": "",
+                "legendFormat": {{ `"{{pod}} ({{role}})"` }},
+                "refId": "A"
+              }
+            ],
+            "thresholds": [
+              {
+                "colorMode": "critical",
+                "fill": true,
+                "line": true,
+                "op": "gt",
+                "value": 5,
+                "visible": true
+              }
+            ],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Panic Message Count",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "alert": {
+              "alertRuleTags": {},
+              "conditions": [
+                {
+                  "evaluator": {
+                    "params": [
+                      {{ .Values.form.alert.groups.database.rules.pgpoolBackendFatalMessageCount.val }}
+                    ],
+                    "type": "gt"
+                  },
+                  "operator": {
+                    "type": "and"
+                  },
+                  "query": {
+                    "params": [
+                      "A",
+                      "5m",
+                      "now"
+                    ]
+                  },
+                  "reducer": {
+                    "params": [],
+                    "type": "last"
+                  },
+                  "type": "query"
+                }
+              ],
+              "executionErrorState": "alerting",
+              "for": "{{ .Values.form.alert.groups.database.rules.pgpoolBackendFatalMessageCount.duration }}",
+              "frequency": "5m",
+              "handler": 1,
+              "name": "PgpoolBackendFatalMessageCount",
+              "noDataState": "no_data",
+              "notifications": []
+            },
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "description": "Pgpool fatal messages returned from backend postgres",
+            "fieldConfig": {
+              "defaults": {},
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 27
+            },
+            "hiddenSeries": false,
+            "id": 10,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "7.5.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "pgpool2_pool_backend_stats_fatal_cnt{job=\"{{ .Values.grafana.jobName }}\",namespace=\"{{ .Release.Namespace }}\",service=\"{{ .Release.Name }}-stats\"}",
+                "instant": false,
+                "interval": "",
+                "legendFormat": {{ `"{{pod}} ({{role}})"` }},
+                "refId": "A"
+              }
+            ],
+            "thresholds": [
+              {
+                "colorMode": "critical",
+                "fill": true,
+                "line": true,
+                "op": "gt",
+                "value": 5,
+                "visible": true
+              }
+            ],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Fatal Message Count",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "alert": {
+              "alertRuleTags": {},
+              "conditions": [
+                {
+                  "evaluator": {
+                    "params": [
+                      {{ .Values.form.alert.groups.database.rules.pgpoolBackendErrorMessageCount.val }}
+                    ],
+                    "type": "gt"
+                  },
+                  "operator": {
+                    "type": "and"
+                  },
+                  "query": {
+                    "params": [
+                      "A",
+                      "5m",
+                      "now"
+                    ]
+                  },
+                  "reducer": {
+                    "params": [],
+                    "type": "last"
+                  },
+                  "type": "query"
+                }
+              ],
+              "executionErrorState": "alerting",
+              "for": "{{ .Values.form.alert.groups.database.rules.pgpoolBackendErrorMessageCount.duration }}",
+              "frequency": "5m",
+              "handler": 1,
+              "name": "PgpoolBackendErrorMessageCount",
+              "noDataState": "no_data",
+              "notifications": []
+            },
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "description": "Pgpool error messages returned from backend postgres",
+            "fieldConfig": {
+              "defaults": {},
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 35
+            },
+            "hiddenSeries": false,
+            "id": 11,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "7.5.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "pgpool2_pool_backend_stats_error_cnt{job=\"{{ .Values.grafana.jobName }}\",namespace=\"{{ .Release.Namespace }}\",service=\"{{ .Release.Name }}-stats\"}",
+                "instant": false,
+                "interval": "",
+                "legendFormat": {{ `"{{pod}} ({{role}})"` }},
+                "refId": "A"
+              }
+            ],
+            "thresholds": [
+              {
+                "colorMode": "critical",
+                "fill": true,
+                "line": true,
+                "op": "gt",
+                "value": 5,
+                "visible": true
+              }
+            ],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Error Message Count",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          },
+          {
+            "alert": {
+              "alertRuleTags": {},
+              "conditions": [
+                {
+                  "evaluator": {
+                    "params": [
+                      {{ .Values.form.alert.groups.database.rules.pgpoolPostgresHealthCheckFailure.val }}
+                    ],
+                    "type": "gt"
+                  },
+                  "operator": {
+                    "type": "and"
+                  },
+                  "query": {
+                    "params": [
+                      "A",
+                      "5m",
+                      "now"
+                    ]
+                  },
+                  "reducer": {
+                    "params": [],
+                    "type": "last"
+                  },
+                  "type": "query"
+                }
+              ],
+              "executionErrorState": "alerting",
+              "for": "{{ .Values.form.alert.groups.database.rules.pgpoolPostgresHealthCheckFailure.duration }}",
+              "frequency": "5m",
+              "handler": 1,
+              "name": "PgpoolPostgresHealthCheckFailure",
+              "noDataState": "no_data",
+              "notifications": []
+            },
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "description": "Health check failure count for postgres",
+            "fieldConfig": {
+              "defaults": {},
+              "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 35
+            },
+            "hiddenSeries": false,
+            "id": 12,
+            "legend": {
+              "avg": false,
+              "current": false,
+              "max": false,
+              "min": false,
+              "show": true,
+              "total": false,
+              "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+              "alertThreshold": true
+            },
+            "percentage": false,
+            "pluginVersion": "7.5.5",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+              {
+                "exemplar": true,
+                "expr": "pgpool2_pool_health_check_stats_fail_count{job=\"{{ .Values.grafana.jobName }}\",namespace=\"{{ .Release.Namespace }}\",service=\"{{ .Release.Name }}-stats\"}",
+                "instant": false,
+                "interval": "",
+                "legendFormat": {{ `"{{pod}} ({{role}})"` }},
+                "refId": "A"
+              }
+            ],
+            "thresholds": [
+              {
+                "colorMode": "critical",
+                "fill": true,
+                "line": true,
+                "op": "gt",
+                "value": 5,
+                "visible": true
+              }
+            ],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Postgres Health Check Failure",
+            "tooltip": {
+              "shared": true,
+              "sort": 0,
+              "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+              "buckets": null,
+              "mode": "time",
+              "name": null,
+              "show": true,
+              "values": []
+            },
+            "yaxes": [
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              },
+              {
+                "format": "short",
+                "label": null,
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true
+              }
+            ],
+            "yaxis": {
+              "align": false,
+              "alignLevel": null
+            }
+          }
+        ],
+        "schemaVersion": 27,
+        "style": "dark",
+        "tags": [],
+        "templating": {
+          "list": []
+        },
+        "time": {
+          "from": "now-5m",
+          "to": "now"
+        },
+        "timepicker": {},
+        "timezone": "",
+        "title": "{{ .Values.metadata.resource.group }} / {{ .Values.metadata.resource.kind }} / {{ .Release.Namespace }} / {{ .Release.Name }}",
+        "uid": null,
+        "version": 22
+      },
+      "folderId": 0,
+      "overwrite": false
+    }
+{{- end }}

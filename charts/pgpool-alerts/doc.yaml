@@ -1,0 +1,18 @@
+project:
+  name: Pgpool alerts by AppsCode
+  shortName: Pgpool alerts
+  url: https://github.com/appscode/alerts
+  description: Pgpool alerts for KubeDB
+  app: Pgpool alerts
+repository:
+  url: https://charts.appscode.com/stable/
+  name: appscode
+chart:
+  name: pgpool
+  values: -- generate from values file --
+  valuesExample: -- generate from values file --
+prerequisites:
+  - Kubernetes 1.19+
+release:
+  name: pgpool
+  namespace: demo
