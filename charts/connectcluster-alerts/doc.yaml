@@ -1,0 +1,18 @@
+project:
+  name: ConnectCluster alerts by AppsCode
+  shortName: ConnectCluster alerts
+  url: https://github.com/appscode/alerts
+  description: ConnectCluster alerts for KubeDB
+  app: ConnectCluster alerts
+repository:
+  url: https://charts.appscode.com/stable/
+  name: appscode
+chart:
+  name: connectcluster
+  values: -- generate from values file --
+  valuesExample: -- generate from values file --
+prerequisites:
+  - Kubernetes 1.19+
+release:
+  name: connectcluster
+  namespace: demo

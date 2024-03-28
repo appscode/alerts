@@ -1,0 +1,101 @@
+metadata:
+  resource:
+    group: kafka.kubedb.com
+    kind: ConnectCluster
+    name: connectclusters
+    scope: Namespaced
+    version: v1alpha1
+  release:
+    # Release name
+    name: ""
+    # Release namespace
+    namespace: ""
+
+form:
+  alert:
+    ## Enable PrometheusRule alerts
+    enabled: warning
+
+    ## Labels for default rules
+    labels: # +doc-gen:break
+      release: kube-prometheus-stack
+
+    ## Annotations for default rules
+    annotations: {}
+
+    ## Additional labels for PrometheusRule alerts
+    additionalRuleLabels: {}
+
+    ## Prefix for runbook URLs. Use this to override the first part of the runbookURLs that is common to all rules.
+    # runbookUrl: "https://runbooks.prometheus-operator.dev/runbooks"
+
+    groups:
+      connect:
+        enabled: warning
+        rules:
+          # Specifies alert configurations for Worker nodes going down
+          connectClusterWorkerDown:
+            enabled: true
+            duration: "1m"
+            severity: critical
+          # Specifies alert configurations for connectcluster too many connections.
+          connectClusterTooManyConnections:
+            enabled: true
+            duration: "2m"
+            val: 80
+            severity: warning
+          # Specifies alert configurations for number of connectors going beyond the provided threshold
+          connectClusterConnectorCount:
+            enabled: true
+            duration: "1m"
+            severity: warning
+            val: 50
+          # Specifies alert configurations for number of coordinator rebalance failed.
+          connectClusterCoordinatorRebalanceFailed:
+            enabled: true
+            duration: "1m"
+            severity: critical
+            val: 10
+      task:
+        enabled: warning
+        rules:
+          # Specifies alert configurations for number of tasks error retries.
+          connectClusterTaskErrorTotalRetries:
+            enabled: true
+            duration: "1m"
+            severity: critical
+            val: 5
+          # Specifies alert configurations for number of tasks going beyond the provided threshold
+          connectClusterTaskTotal:
+            enabled: true
+            duration: "1m"
+            severity: warning
+            val: 150
+          # Specifies alert configurations for number of tasks failed.
+          connectClusterTaskTotalFailed:
+            enabled: true
+            duration: "1m"
+            severity: warning
+          # Specifies alert configurations for number of tasks destroyed.
+          connectClusterTaskTotalDestroyed:
+            enabled: true
+            duration: "1m"
+            severity: warning
+      provisioner:
+        enabled: warning
+        rules:
+          appPhaseNotReady:
+            enabled: true
+            duration: "1m"
+            severity: critical
+          appPhaseCritical:
+            enabled: true
+            duration: "15m"
+            severity: warning
+
+grafana:
+  enabled: false
+  version: 8.2.3
+  jobName: kubedb-databases
+  url: ""
+  apikey: ""
