@@ -1,0 +1,13 @@
+apiVersion: v2
+name: mssqlserver-alerts
+description: A Helm chart for MSSQLServer Alert by AppsCode
+type: application
+version: v2023.05.09
+appVersion: v0.2.0
+home: https://github.com/appscode/alerts
+icon: https://cdn.appscode.com/images/products/kubedb/kubedb-icon.png
+sources:
+- https://github.com/appscode/alerts
+maintainers:
+- name: appscode
+  email: support@appscode.com

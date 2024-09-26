@@ -68,6 +68,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&MemcachedAlertsList{},
 		&MongodbAlerts{},
 		&MongodbAlertsList{},
+		&MSSQLServerAlerts{},
+		&MSSQLServerAlertsList{},
 		&MysqlAlerts{},
 		&MysqlAlertsList{},
 		&PerconaxtradbAlerts{},
