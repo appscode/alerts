@@ -37,9 +37,31 @@
 - #### AppPhaseNotReady
   - Contact AppsCode team
 - #### AppPhaseCritical
-  - If any `MySQLOpsRequest` is ongoing on same database, Wait until it completes.
-  - If some nodes of the MySQL group are not `Up`, Try restarting those nodes one at a time.
-  - Contact AppsCode team if this persists for more than 30 minutes.
+    - If the database enters a `Critical` phase and the secondary pod goes `OFFLINE`, with pod logs showing the errors the `source's binary log is corrupted` and `Error_code: MY-013121`, it's likely that both the relay log and binary log are corrupted.
+        - Here's the solution:
+        ```bash
+        # Step 1: Access the primary pod:
+        $ kubectl exec -it -n <namespace> <primary-pod-name> -- bash 
+        $ mysql -u<username> -p<password>
+        $ SHOW MASTER STATUS;
+        # From the query result, note down SOURCE_LOG_FILE and SOURCE_LOG_POS.
+  
+        # Step 2: Access the secondary (affected) pod:
+        $ kubectl exec -it -n <namespace> <affected-pod-name> -- bash
+        $ mysql -u<username> -p<password>
+        $ STOP SLAVE;
+        $ CHANGE REPLICATION SOURCE TO
+          SOURCE_HOST = '<primary-pod-name>.<dbname>-pods.<namespace>.svc',
+          SOURCE_PORT = 3306,
+          SOURCE_USER = 'repl',
+          SOURCE_PASSWORD = '$MYSQL_ROOT_PASSWORD',
+          SOURCE_LOG_FILE = '<file>',
+          SOURCE_LOG_POS = <position>;
+        $ START SLAVE;
+        ```
+    - If any `MySQLOpsRequest` is ongoing on same database, Wait until it completes.
+    - If some nodes of the MySQL group are not `Up`, Try restarting those nodes one at a time.
+    - Contact AppsCode team if this persists for more than 30 minutes.
 
 ### KubeDB OpsManager
 
